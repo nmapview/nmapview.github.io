@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -31,7 +30,7 @@
     "applicationCategory":"SecurityApplication",
     "operatingSystem":"Cross-platform",
     "description":"Nmap XML report viewer that converts Nmap XML into portable interactive HTML reports.",
-    "url":"https://YOUR_USERNAME.github.io/NmapView/",
+    "url":"https://nmapview.github.io/",
     "codeRepository":"https://github.com/dreizehnutters/NmapView",
     "sameAs":[
       "https://github.com/dreizehnutters/NmapView",
@@ -57,7 +56,14 @@
 
     .hero{
       text-align:center;
-      padding:4rem 0;
+      padding:3rem 0 4rem;
+    }
+
+    .hero img{
+      max-width:100%;
+      border-radius:12px;
+      margin-bottom:2rem;
+      box-shadow:0 10px 30px rgba(0,0,0,0.15);
     }
 
     .tagline{
@@ -79,21 +85,22 @@
       text-decoration:none;
       font-weight:600;
       border:1px solid #ccc;
+      color:#111;
     }
 
     .primary{
       background:#111;
       color:#fff;
+      border:1px solid #111;
     }
 
     img{
       max-width:100%;
-      border-radius:12px;
     }
 
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
       gap:1rem;
       margin-top:2rem;
     }
@@ -102,6 +109,7 @@
       border:1px solid #ddd;
       border-radius:12px;
       padding:1rem;
+      background:#fff;
     }
 
     section{
@@ -113,6 +121,13 @@
       padding:.2rem .4rem;
       border-radius:4px;
     }
+
+    pre{
+      background:#f5f5f5;
+      padding:1rem;
+      border-radius:8px;
+      overflow:auto;
+    }
   </style>
 
 </head>
@@ -121,14 +136,16 @@
 
 <section class="hero">
 
-  <h1>NmapView</h1>
+  <img src="https://möbius.band/blog/NmapView/social.png" alt="NmapView Social Banner">
+
+  <h1>NmapView – Nmap XML Report Viewer</h1>
 
   <p class="tagline">
     Transform raw Nmap XML into a single portable interactive HTML report.
   </p>
 
   <p>
-    No backend. No database. No reporting pipeline.
+    No backend. No database. No reporting pipeline.<br>
     Generate a report and open it anywhere.
   </p>
 
@@ -137,25 +154,14 @@
       View on GitHub
     </a>
 
-```
-<a class="button" href="https://möbius.band/report.html">
-  Live Demo
-</a>
+    <a class="button" href="https://möbius.band/report.html">
+      Live Demo
+    </a>
 
-<a class="button" href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl">
-  Download XSL
-</a>
-```
-
+    <a class="button" href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl">
+      Download XSL
+    </a>
   </div>
-
-</section>
-
-<section>
-
-  <a href="https://möbius.band/report.html">
-    <img src="https://möbius.band/blog/nmapview/media/gifs/demo-report-landing.gif" alt="NmapView Interactive Report">
-  </a>
 
 </section>
 
@@ -165,35 +171,25 @@
 
   <div class="grid">
 
-```
-<div class="card">
-  <h3>Portable</h3>
-  <p>
-    Everything lives in a single HTML file.
-  </p>
-</div>
+    <div class="card">
+      <h3>Portable</h3>
+      <p>Everything lives in a single HTML file.</p>
+    </div>
 
-<div class="card">
-  <h3>Interactive</h3>
-  <p>
-    Search, sort, filter, highlight and export data instantly.
-  </p>
-</div>
+    <div class="card">
+      <h3>Interactive</h3>
+      <p>Search, sort, filter, highlight and export instantly.</p>
+    </div>
 
-<div class="card">
-  <h3>No Infrastructure</h3>
-  <p>
-    No backend, database, API, Python service or container required.
-  </p>
-</div>
+    <div class="card">
+      <h3>No Infrastructure</h3>
+      <p>No backend, database, API or services required.</p>
+    </div>
 
-<div class="card">
-  <h3>Built for Triage</h3>
-  <p>
-    Quickly identify exposed services, version variants and unusual hosts.
-  </p>
-</div>
-```
+    <div class="card">
+      <h3>Built for Triage</h3>
+      <p>Quickly identify exposed services, versions and anomalies.</p>
+    </div>
 
   </div>
 
@@ -203,15 +199,13 @@
 
   <h2>Quick Start</h2>
 
-<pre><code>curl -fsSL -o NmapView.xsl \
+  <pre><code>curl -fsSL -o NmapView.xsl \
 https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl
 
 xsltproc -o report.html NmapView.xsl scan.xml
-</code></pre>
+  </code></pre>
 
-  <p>
-    Open <code>report.html</code> in your browser.
-  </p>
+  <p>Open <code>report.html</code> in your browser.</p>
 
 </section>
 
