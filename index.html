@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>NmapView – Nmap XML Report Viewer</title>
+
+  <meta name="description" content="Transform Nmap XML into a single portable interactive HTML report. No backend, no database, no reporting pipeline.">
+  <meta name="keywords" content="NmapView, Nmap XML Viewer, Nmap Report Viewer, Nmap HTML Report, Nmap XML Report Viewer, Nmap Visualization">
+  <meta name="author" content="Fabian K.">
+
+  <link rel="canonical" href="https://nmapview.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NmapView – Nmap XML Report Viewer">
+  <meta property="og:description" content="Turn raw Nmap XML into a portable interactive HTML dashboard.">
+  <meta property="og:image" content="https://möbius.band/blog/NmapView/social.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NmapView – Nmap XML Report Viewer">
+  <meta name="twitter:description" content="Interactive HTML reports from Nmap XML.">
+  <meta name="twitter:image" content="https://möbius.band/blog/NmapView/social.png">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"SoftwareApplication",
+    "name":"NmapView",
+    "applicationCategory":"SecurityApplication",
+    "operatingSystem":"Cross-platform",
+    "description":"Nmap XML report viewer that converts Nmap XML into portable interactive HTML reports.",
+    "url":"https://YOUR_USERNAME.github.io/NmapView/",
+    "codeRepository":"https://github.com/dreizehnutters/NmapView",
+    "sameAs":[
+      "https://github.com/dreizehnutters/NmapView",
+      "https://möbius.band/blog/nmapview/"
+    ]
+  }
+  </script>
+
+  <style>
+    body{
+      font-family:system-ui,-apple-system,sans-serif;
+      max-width:1100px;
+      margin:auto;
+      padding:2rem;
+      line-height:1.6;
+      color:#222;
+    }
+
+    h1{
+      font-size:3rem;
+      margin-bottom:.5rem;
+    }
+
+    .hero{
+      text-align:center;
+      padding:4rem 0;
+    }
+
+    .tagline{
+      font-size:1.3rem;
+      color:#555;
+      max-width:700px;
+      margin:auto;
+    }
+
+    .buttons{
+      margin-top:2rem;
+    }
+
+    .button{
+      display:inline-block;
+      padding:.9rem 1.4rem;
+      margin:.4rem;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:600;
+      border:1px solid #ccc;
+    }
+
+    .primary{
+      background:#111;
+      color:#fff;
+    }
+
+    img{
+      max-width:100%;
+      border-radius:12px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:1rem;
+      margin-top:2rem;
+    }
+
+    .card{
+      border:1px solid #ddd;
+      border-radius:12px;
+      padding:1rem;
+    }
+
+    section{
+      margin-top:5rem;
+    }
+
+    code{
+      background:#f5f5f5;
+      padding:.2rem .4rem;
+      border-radius:4px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<section class="hero">
+
+  <h1>NmapView</h1>
+
+  <p class="tagline">
+    Transform raw Nmap XML into a single portable interactive HTML report.
+  </p>
+
+  <p>
+    No backend. No database. No reporting pipeline.
+    Generate a report and open it anywhere.
+  </p>
+
+  <div class="buttons">
+    <a class="button primary" href="https://github.com/dreizehnutters/NmapView">
+      View on GitHub
+    </a>
+
+```
+<a class="button" href="https://möbius.band/report.html">
+  Live Demo
+</a>
+
+<a class="button" href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl">
+  Download XSL
+</a>
+```
+
+  </div>
+
+</section>
+
+<section>
+
+  <a href="https://möbius.band/report.html">
+    <img src="https://möbius.band/blog/nmapview/media/gifs/demo-report-landing.gif" alt="NmapView Interactive Report">
+  </a>
+
+</section>
+
+<section>
+
+  <h2>Why NmapView?</h2>
+
+  <div class="grid">
+
+```
+<div class="card">
+  <h3>Portable</h3>
+  <p>
+    Everything lives in a single HTML file.
+  </p>
+</div>
+
+<div class="card">
+  <h3>Interactive</h3>
+  <p>
+    Search, sort, filter, highlight and export data instantly.
+  </p>
+</div>
+
+<div class="card">
+  <h3>No Infrastructure</h3>
+  <p>
+    No backend, database, API, Python service or container required.
+  </p>
+</div>
+
+<div class="card">
+  <h3>Built for Triage</h3>
+  <p>
+    Quickly identify exposed services, version variants and unusual hosts.
+  </p>
+</div>
+```
+
+  </div>
+
+</section>
+
+<section>
+
+  <h2>Quick Start</h2>
+
+<pre><code>curl -fsSL -o NmapView.xsl \
+https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl
+
+xsltproc -o report.html NmapView.xsl scan.xml
+</code></pre>
+
+  <p>
+    Open <code>report.html</code> in your browser.
+  </p>
+
+</section>
+
+<section>
+
+  <h2>Features</h2>
+
+  <ul>
+    <li>Single-file HTML reports</li>
+    <li>Host overview and asset inventory</li>
+    <li>Service grouping and version analysis</li>
+    <li>CSV, Excel and JSON export</li>
+    <li>Global keyword highlighting</li>
+    <li>Interactive visualizations</li>
+    <li>NSE output review</li>
+    <li>Host and service relationship analysis</li>
+  </ul>
+
+</section>
+
+<section>
+
+  <h2>Use Cases</h2>
+
+  <ul>
+    <li>Internal network assessments</li>
+    <li>External attack surface reviews</li>
+    <li>Pentest reporting</li>
+    <li>Asset inventory analysis</li>
+    <li>Service exposure reviews</li>
+    <li>Sharing scan results with engineers and clients</li>
+  </ul>
+
+</section>
+
+<section>
+
+  <h2>Links</h2>
+
+  <ul>
+    <li><a href="https://github.com/dreizehnutters/NmapView">GitHub Repository</a></li>
+    <li><a href="https://möbius.band/report.html">Live Demo Report</a></li>
+    <li><a href="https://möbius.band/blog/nmapview/">Blog Post</a></li>
+    <li><a href="https://möbius.band/proc/">Browser Transformer</a></li>
+  </ul>
+
+</section>
+
+</body>
+</html>
