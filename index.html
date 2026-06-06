@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>NmapView – Nmap XML Report Viewer</title>
 
@@ -35,225 +35,548 @@
     "codeRepository":"https://github.com/dreizehnutters/NmapView",
     "sameAs":[
       "https://github.com/dreizehnutters/NmapView",
-      "https://möbius.band/blog/nmapview/"
+      "https://möbius.band/blog/nmapview/",
+      "https://xn--mbius-jua.band/blog/nmapview/"
     ]
   }
   </script>
 
-  <style>
-    body{
-      font-family:system-ui,-apple-system,sans-serif;
-      max-width:1100px;
-      margin:auto;
-      padding:2rem;
-      line-height:1.6;
-      color:#222;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    h1{
-      font-size:3rem;
-      margin-bottom:.5rem;
-    }
+  :root {
+    --bg: #f7f8fa;
+    --white: #ffffff;
+    --text: #0f1117;
+    --text-2: #3d4150;
+    --muted: #8b90a0;
+    --border: #e2e5ec;
+    --border-2: #cdd1db;
+    --accent: #2563eb;
+    --accent-light: #eff4ff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --radius: 6px;
+  }
 
-    .hero{
-      text-align:center;
-      padding:3rem 0 4rem;
-    }
+  html { scroll-behavior: smooth; }
 
-    .hero img{
-      max-width:100%;
-      border-radius:12px;
-      margin-bottom:2rem;
-      box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    .tagline{
-      font-size:1.3rem;
-      color:#555;
-      max-width:700px;
-      margin:auto;
-    }
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247,248,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 56px;
+  }
+  .nav-left { display: flex; align-items: center; gap: 32px; }
+  .nav-logo {
+    display: flex; align-items: center; gap: 9px;
+    font-family: var(--mono); font-size: 14px; font-weight: 600;
+    color: var(--text); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 0; list-style: none; }
+  .nav-links a {
+    color: var(--text-2); text-decoration: none;
+    font-size: 13px; padding: 6px 14px; border-radius: var(--radius);
+  }
+  .nav-links a:hover { background: var(--border); color: var(--text); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
 
-    .buttons{
-      margin-top:2rem;
-    }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 16px; font-family: var(--sans); font-size: 13px;
+    font-weight: 500; text-decoration: none; border-radius: var(--radius);
+    border: none; cursor: pointer; white-space: nowrap;
+  }
+  .btn-ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border-2); }
+  .btn-ghost:hover { background: var(--white); color: var(--text); }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-xl { padding: 13px 28px; font-size: 15px; font-weight: 600; }
+  .btn-white { background: white; color: var(--accent); font-weight: 600; }
+  .btn-white:hover { background: #f0f4ff; }
+  .btn-outline-white { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.4); }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
 
-    .button{
-      display:inline-block;
-      padding:.9rem 1.4rem;
-      margin:.4rem;
-      border-radius:8px;
-      text-decoration:none;
-      font-weight:600;
-      border:1px solid #ccc;
-      color:#111;
-    }
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 48px 72px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .hero-version {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.08em; margin-bottom: 20px; text-transform: uppercase;
+  }
+  h1 {
+    font-size: clamp(36px, 4.5vw, 56px); font-weight: 600;
+    line-height: 1.1; letter-spacing: -0.03em; color: var(--text); margin-bottom: 20px;
+  }
+  h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 16px; color: var(--text-2); line-height: 1.7;
+    margin-bottom: 36px; max-width: 460px; font-weight: 300;
+  }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    .primary{
-      background:#111;
-      color:#fff;
-      border:1px solid #111;
-    }
+  /* TERMINAL */
+  .terminal {
+    background: #0f1117; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .terminal-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 12px 16px; background: #1a1d27; border-bottom: 1px solid #2a2d3a;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+  .terminal-title { font-family: var(--mono); font-size: 11px; color: #565970; margin: 0 auto; transform: translateX(-16px); }
+  .terminal-body { padding: 20px 24px 24px; font-family: var(--mono); font-size: 12.5px; line-height: 1.9; }
+  .tl { display: block; }
+  .tk { color: #569cd6; } .ts { color: #ce9178; } .tf { color: #9cdcfe; }
+  .to { color: #4ec9b0; } .tg { color: #6a9955; } .tn { color: #d4d4d4; }
+  .blank { display: block; height: 6px; }
+  .cursor {
+    display: inline-block; width: 8px; height: 14px;
+    background: #569cd6; vertical-align: middle;
+    animation: blink 1.2s step-end infinite; border-radius: 1px;
+  }
 
-    img{
-      max-width:100%;
-    }
+  /* ── GIF SHOWCASE ── */
+  .gif-section { background: var(--text); padding: 72px 48px; }
+  .gif-section-inner { max-width: 1200px; margin: 0 auto; }
+  .gif-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px; }
+  .gif-header h2 { color: white; font-size: clamp(22px, 2.5vw, 32px); }
+  .gif-header p { color: rgba(255,255,255,0.4); font-size: 13px; font-family: var(--mono); }
+  .gif-frame {
+    width: 100%; border: 1px solid #2a2d3a; border-radius: 8px;
+    overflow: hidden; background: #1a1d27;
+    display: flex; align-items: center; justify-content: center; min-height: 480px;
+  }
+  .gif-frame img { width: 100%; height: auto; display: block; }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:1rem;
-      margin-top:2rem;
-    }
+  /* ── STRIP (after gif) ── */
+  .strip { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .strip-inner { max-width: 1200px; margin: 0 auto; }
+  .strip-row {
+    display: grid; grid-template-columns: 200px 1fr;
+    align-items: center; border-bottom: 1px solid var(--border);
+    padding: 13px 48px; gap: 24px;
+  }
+  .strip-row:last-child { border-bottom: none; }
+  .strip-label { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
+  .strip-desc { font-size: 13px; color: var(--muted); font-family: var(--mono); }
 
-    .card{
-      border:1px solid #ddd;
-      border-radius:12px;
-      padding:1rem;
-      background:#fff;
-    }
+  /* ── SECTIONS ── */
+  .section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-full {
+    padding: 80px 48px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .section-full-inner { max-width: 1200px; margin: 0 auto; }
 
-    section{
-      margin-top:5rem;
-    }
+  h2 {
+    font-size: clamp(26px, 3vw, 38px); font-weight: 600;
+    line-height: 1.15; letter-spacing: -0.025em; color: var(--text); margin-bottom: 14px;
+  }
+  .section-sub {
+    font-size: 15px; color: var(--text-2); font-weight: 300;
+    line-height: 1.7; max-width: 560px; margin-bottom: 48px;
+  }
 
-    code{
-      background:#f5f5f5;
-      padding:.2rem .4rem;
-      border-radius:4px;
-    }
+  /* ── FEATURES TABLE ── */
+  .features-table { width: 100%; border-collapse: collapse; }
+  .features-table tr { border-bottom: 1px solid var(--border); }
+  .features-table tr:first-child { border-top: 1px solid var(--border); }
+  .features-table td { padding: 22px 0; vertical-align: top; }
+  .ft-num {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    width: 40px; padding-right: 24px; padding-top: 3px; white-space: nowrap;
+  }
+  .ft-name {
+    font-size: 14px; font-weight: 500; color: var(--text);
+    width: 220px; padding-right: 32px; padding-top: 1px;
+  }
+  .ft-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-    pre{
-      background:#f5f5f5;
-      padding:1rem;
-      border-radius:8px;
-      overflow:auto;
-    }
-  </style>
+  /* ── REPORT SECTIONS ── */
+  /* Four-section layout: label col + description col + plots col */
+  .report-table { width: 100%; border-collapse: collapse; margin-top: 0; }
+  .report-table tr { border-bottom: 1px solid var(--border); }
+  .report-table tr:first-child { border-top: 1px solid var(--border); }
+  .report-table td { padding: 28px 0; vertical-align: top; }
+  .rt-num {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    width: 40px; padding-right: 24px; padding-top: 3px; white-space: nowrap;
+  }
+  .rt-name {
+    font-size: 14px; font-weight: 500; color: var(--text);
+    width: 200px; padding-right: 40px; padding-top: 1px;
+  }
+  .rt-desc {
+    font-size: 13px; color: var(--muted); line-height: 1.65;
+    padding-right: 48px;
+  }
+  .rt-plots { width: 320px; vertical-align: top; padding-top: 2px; }
+  .plot-item { margin-bottom: 16px; }
+  .plot-item:last-child { margin-bottom: 0; }
+  .plot-name {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--text-2); margin-bottom: 3px;
+    display: block;
+  }
+  .plot-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
+  /* ── QUICKSTART ── */
+  .qs-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start; }
+  .qs-steps { display: flex; flex-direction: column; }
+  .qs-step { display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .qs-step:first-child { border-top: 1px solid var(--border); }
+  .qs-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent-light); border: 1px solid #bfdbfe;
+    color: var(--accent); font-family: var(--mono); font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .qs-step-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .qs-step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .code-block { background: #0f1117; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+  .code-block-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; background: #1a1d27; border-bottom: 1px solid #2a2d3a;
+  }
+  .code-lang { font-family: var(--mono); font-size: 11px; color: #565970; letter-spacing: 0.08em; text-transform: uppercase; }
+  .copy-btn { font-family: var(--mono); font-size: 11px; color: #565970; background: none; border: none; cursor: pointer; padding: 3px 8px; border-radius: 4px; }
+  .copy-btn:hover { background: #2a2d3a; color: #9cdcfe; }
+  .code-block pre { padding: 20px 24px; font-family: var(--mono); font-size: 12.5px; line-height: 2; overflow-x: auto; color: #d4d4d4; }
+  .nmap-tip {
+    margin-top: 12px; padding: 14px 16px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 12px; color: var(--text-2); line-height: 1.6;
+  }
+  .nmap-tip code { font-family: var(--mono); background: var(--bg); padding: 1px 5px; border-radius: 3px; font-size: 11px; color: var(--accent); }
+
+  /* ── USE CASES ── */
+  .usecases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+  .uc-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .uc-card:hover { background: var(--white); border-color: var(--border-2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .uc-icon { font-size: 22px; margin-bottom: 12px; display: block; }
+  .uc-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .uc-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── CTA ── */
+  .cta-banner { background: var(--accent); padding: 72px 48px; text-align: center; }
+  .cta-banner-inner { max-width: 560px; margin: 0 auto; }
+  .cta-banner h2 { color: white; font-size: clamp(26px, 3vw, 36px); margin-bottom: 12px; }
+  .cta-banner p { color: rgba(255,255,255,0.75); font-size: 15px; font-weight: 300; margin-bottom: 32px; line-height: 1.6; }
+  .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--text); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 9px; }
+  .footer-links { display: flex; gap: 28px; list-style: none; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; }
+  .footer-links a:hover { color: rgba(255,255,255,0.8); }
+  .footer-right { font-size: 12px; color: rgba(255,255,255,0.25); font-family: var(--mono); }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    nav { padding: 0 20px; }
+    .hero { grid-template-columns: 1fr; padding: 48px 20px; gap: 40px; }
+    .hero-visual { display: none; }
+    .section, .section-full { padding: 56px 20px; }
+    .qs-grid { grid-template-columns: 1fr; }
+    .usecases-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 20px; padding: 32px 20px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .strip-row { padding: 12px 20px; grid-template-columns: 140px 1fr; }
+    .gif-section { padding: 48px 20px; }
+    .features-table td, .report-table td { display: block; width: 100%; }
+    .ft-num, .rt-num { display: none; }
+    .ft-name, .rt-name { width: 100%; padding-right: 0; padding-bottom: 4px; }
+    .rt-desc { padding-right: 0; margin-bottom: 16px; }
+    .rt-plots { width: 100%; }
+  }
+  @media (max-width: 600px) {
+    .usecases-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
 </head>
-
 <body>
 
-<section class="hero">
-
-  <img src="https://möbius.band/blog/NmapView/social.png" alt="NmapView Social Banner">
-
-  <h1>NmapView – Nmap XML Report Viewer</h1>
-
-  <p class="tagline">
-    Transform raw Nmap XML into a single portable interactive HTML report.
-  </p>
-
-  <p>
-    No backend. No database. No reporting pipeline.<br>
-    Generate a report and open it anywhere.
-  </p>
-
-  <div class="buttons">
-    <a class="button primary" href="https://github.com/dreizehnutters/NmapView">
-      View on GitHub
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="#" class="nav-logo">
+      <svg class="navbar-brand-mark" height="64" width="64" viewBox="0 0 64 64" aria-hidden="true" style="max-height: 28px; width: auto;"><rect width="64" height="64" rx="14" fill="#f7f9fb"></rect><circle cx="27" cy="27" r="15" fill="none" stroke="#24313d" stroke-width="6"></circle><path d="M38 38 L52 52" stroke="#24313d" stroke-width="6" stroke-linecap="round"></path></svg>
+      NmapView
     </a>
-
-    <a class="button" href="https://möbius.band/report.html">
-      Live Demo
-    </a>
-
-    <a class="button" href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl">
-      Download XSL
-    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#report">Report</a></li>
+      <li><a href="#usecases">Use Cases</a></li>
+    </ul>
   </div>
+  <div class="nav-right">
+    <a href="https://github.com/dreizehnutters/NmapView" class="btn btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.3 3.5 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <a href="https://möbius.band/report.html" class="btn btn-primary">Live Demo →</a>
+  </div>
+</nav>
 
-</section>
+<!-- HERO -->
+<div style="background: var(--white); border-bottom: 1px solid var(--border);">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-version" id="hero-version"></div>
+      <h1>Nmap XML into<br>a <span>clean report</span>.<br>Instantly.</h1>
+      <p class="hero-sub">
+        Transform raw Nmap XML scan results into a single interactive HTML report — sortable, filterable, exportable. One command, no backend, no infrastructure.
+      </p>
+      <div class="hero-cta">
+        <a href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl" class="btn btn-primary btn-xl">↓ Download XSL</a>
+        <a href="https://möbius.band/report.html" class="btn btn-ghost btn-xl">View Demo Report</a>
+      </div>
+      <div style="margin-top:24px;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text-2);line-height:1.6;">
+        No CLI? Use the <a href="https://möbius.band/proc/" style="color:var(--accent);font-weight:500;text-decoration:none;">browser-based transformer</a> — drag and drop your XML directly.
+      </div>
+    </div>
 
+    <div class="hero-visual">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span class="terminal-title">bash — ~/NmapView</span>
+        </div>
+        <div class="terminal-body">
+          <span class="tl tg"># 1. Grab the transformer</span>
+          <span class="tl"><span class="tk">curl</span> <span class="tf">-fsSL</span> <span class="tf">-o</span> <span class="ts">NmapView.xsl</span> <span class="tn">\</span></span>
+          <span class="tl">&nbsp;&nbsp;<span class="ts">https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl</span></span>
+          <span class="blank"></span>
+          <span class="tl tg"># 2. Generate the report</span>
+          <span class="tl"><span class="tk">xsltproc</span> <span class="tf">-o</span> <span class="ts">report.html</span> <span class="tn">NmapView.xsl scan.xml</span></span>
+          <span class="blank"></span>
+          <span class="tl tg"># 3. Open anywhere</span>
+          <span class="tl"><span class="tk">open</span> <span class="ts">report.html</span> <span class="cursor"></span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GIF SHOWCASE -->
+<div class="gif-section">
+  <div class="gif-section-inner">
+    <div class="gif-header">
+      <h2>See it in action</h2>
+    </div>
+    <div class="gif-frame">
+      <img src="https://raw.githubusercontent.com/dreizehnutters/NmapView/refs/heads/main/.github/assets/sample.gif" alt="NmapView report walkthrough">
+    </div>
+  </div>
+</div>
+
+<!-- STRIP (after gif) -->
+<div class="section-full" id="features">
+  <div class="section-full-inner">
+  <p class="strip-inner"><b>Designed for security assessments, asset discovery, attack-surface reviews and pentest reporting.</b></p>
+  <br>
+
+  <div class="strip-inner">
+    <div class="strip-row">
+      <div class="strip-label">Fully interactive</div>
+      <div class="strip-desc">Sort · Filter · Search · Export</div>
+    </div>
+    <div class="strip-row">
+      <div class="strip-label">Host rarity scoring</div>
+      <div class="strip-desc">Quickly surface unusual hosts and outliers</div>
+    </div>
+    <div class="strip-row">
+      <div class="strip-label">Service intelligence</div>
+      <div class="strip-desc">Versions · CPEs · NSE enrichment · CVE links</div>
+    </div>
+    <div class="strip-row">
+      <div class="strip-label">Host scoping</div>
+      <div class="strip-desc">Focus on a subset and recompute the entire report</div>
+    </div>
+    <div class="strip-row">
+      <div class="strip-label">Single HTML file</div>
+      <div class="strip-desc">No backend · no database · no dependencies</div>
+    </div>
+    <div class="strip-row">
+      <div class="strip-label">Built for triage</div>
+      <div class="strip-desc">From high-level inventory to per-host investigation</div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT STRUCTURE -->
+<div class="section-full" id="report">
 <section>
 
-  <h2>Why NmapView?</h2>
+  <h2>From overview to deep dive</h2>
+
+  <p>
+    Move from broad asset visibility to detailed host investigation in a few clicks.
+  </p>
 
   <div class="grid">
 
     <div class="card">
-      <h3>Portable</h3>
-      <p>Everything lives in a single HTML file.</p>
+      <h3>1. Host Overview</h3>
+      <p>
+        Inventory hosts, operating systems, exposure levels and rarity
+        scores. Visualise exposure with Open Ports Per Host and Operating
+        System Distribution charts.
+      </p>
     </div>
 
     <div class="card">
-      <h3>Interactive</h3>
-      <p>Search, sort, filter, highlight and export instantly.</p>
+      <h3>2. Open Services</h3>
+      <p>
+        Review exposed services, versions, certificates, HTTP metadata,
+        CPEs and vulnerability references. Service Distribution Across
+        Hosts highlights common and unusual services.
+      </p>
     </div>
 
     <div class="card">
-      <h3>No Infrastructure</h3>
-      <p>No backend, database, API or services required.</p>
+      <h3>3. Service Summary</h3>
+      <p>
+        Group hosts by service, product, version and port. Explore
+        Host-Service Relationships and Service-Port Heatmaps to identify
+        common baselines and unusual deployments.
+      </p>
     </div>
 
     <div class="card">
-      <h3>Built for Triage</h3>
-      <p>Quickly identify exposed services, versions and anomalies.</p>
+      <h3>4. Host Details</h3>
+      <p>
+        Drill into ports, banners, scripts and complete NSE output for
+        individual hosts. Use the Host-Port Matrix to investigate
+        exposure patterns host by host.
+      </p>
     </div>
 
   </div>
 
 </section>
+</div>
 
-<section>
+<!-- USE CASES -->
+<section class="section" id="usecases">
+  <h2>Built for the full workflow</h2>
+  <p class="section-sub">From jump-box triage to polished client deliverables. The same HTML file works as a pivot point, a handoff artifact, and a prompt surface for LLM analysis.</p>
 
-  <h2>Quick Start</h2>
-
-  <pre><code>curl -fsSL -o NmapView.xsl \
-https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl
-
-xsltproc -o report.html NmapView.xsl scan.xml
-  </code></pre>
-
-  <p>Open <code>report.html</code> in your browser.</p>
-
+  <div class="usecases-grid">
+    <div class="uc-card">
+      <span class="uc-icon">🏢</span>
+      <div class="uc-title">Internal Network Assessments</div>
+      <div class="uc-desc">Enumerate hosts, spot version drift, and document findings in a portable format — without a reporting pipeline on the jump box.</div>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">🌍</span>
+      <div class="uc-title">External Attack Surface Reviews</div>
+      <div class="uc-desc">Map public-facing infrastructure, filter to SSL endpoints, and track remediation progress across periodic scans.</div>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">📝</span>
+      <div class="uc-title">Pentest Reporting</div>
+      <div class="uc-desc">Hand clients an interactive report as a single file. No account, no server, no expiry — scope it to the hosts that matter first.</div>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">🔗</span>
+      <div class="uc-title">Downstream Tool Handoff</div>
+      <div class="uc-desc">Scope and filter, then export to CSV or JSON for httpx, nuclei, testssl.sh, or ssh-audit follow-up.</div>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">🤖</span>
+      <div class="uc-title">LLM Analysis</div>
+      <div class="uc-desc">The exported CSV or JSON from a scoped report is a better prompt surface than raw Nmap XML — grouped, labeled, and easy to slice.</div>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">📦</span>
+      <div class="uc-title">Asset Inventory</div>
+      <div class="uc-desc">Build a living inventory from periodic scans. Export to Excel for management review, compliance tracking, or audit handoff.</div>
+    </div>
+  </div>
 </section>
 
-<section>
+<!-- CTA -->
+<div class="cta-banner">
+  <div class="cta-banner-inner">
+    <h2>Ready to ship better reports?</h2>
+    <p>Download the XSL transformer and generate your first interactive report in under a minute.</p>
+    <div class="cta-actions">
+      <a href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl" class="btn btn-white btn-xl">↓ Download NmapView.xsl</a>
+      <a href="https://möbius.band/report.html" class="btn btn-outline-white btn-xl">View Sample Report</a>
+    </div>
+  </div>
+</div>
 
-  <h2>Features</h2>
-
-  <ul>
-    <li>Single-file HTML reports</li>
-    <li>Host overview and asset inventory</li>
-    <li>Service grouping and version analysis</li>
-    <li>CSV, Excel and JSON export</li>
-    <li>Global keyword highlighting</li>
-    <li>Interactive visualizations</li>
-    <li>NSE output review</li>
-    <li>Host and service relationship analysis</li>
-  </ul>
-
-</section>
-
-<section>
-
-  <h2>Use Cases</h2>
-
-  <ul>
-    <li>Internal network assessments</li>
-    <li>External attack surface reviews</li>
-    <li>Pentest reporting</li>
-    <li>Asset inventory analysis</li>
-    <li>Service exposure reviews</li>
-    <li>Sharing scan results with engineers and clients</li>
-  </ul>
-
-</section>
-
-<section>
-
-  <h2>Links</h2>
-
-  <ul>
-    <li><a href="https://github.com/dreizehnutters/NmapView">GitHub Repository</a></li>
-    <li><a href="https://möbius.band/report.html">Live Demo Report</a></li>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg height="64" width="64" viewBox="0 0 64 64" style="max-height: 22px; width: auto;"><rect width="64" height="64" rx="14" fill="#2a2d3a"></rect><circle cx="27" cy="27" r="15" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="6"></circle><path d="M38 38 L52 52" stroke="rgba(255,255,255,0.5)" stroke-width="6" stroke-linecap="round"></path></svg>
+    NmapView
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/dreizehnutters/NmapView">GitHub</a></li>
+    <li><a href="https://möbius.band/report.html">Live Demo</a></li>
     <li><a href="https://möbius.band/blog/nmapview/">Blog Post</a></li>
-    <li><a href="https://möbius.band/proc/">Browser Transformer</a></li>
+    <li><a href="https://möbius.band/proc/">Browser Tool</a></li>
   </ul>
+  <div class="footer-right">MIT · dreizehnutters</div>
+</footer>
 
-</section>
+<script>
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
 
+  fetch('https://api.github.com/repos/dreizehnutters/NmapView/releases/latest')
+    .then(r => r.json())
+    .then(data => {
+      const tag = data.tag_name;
+      if (!tag) return;
+      const el = document.getElementById('hero-version');
+      if (el) el.textContent = 'NmapView ' + tag + ' · MIT';
+    })
+    .catch(() => {});
+</script>
 </body>
 </html>
