@@ -1024,13 +1024,14 @@
     let offsetX = 0, offsetY = 0;
 
     p.setup = function() {
+      p.pixelDensity(2);
       const cvs = p.createCanvas(section.offsetWidth, section.offsetHeight);
       cvs.parent(section);
       // move canvas to be first child so it sits behind .gif-inner
       section.insertBefore(cvs.elt, section.firstChild);
       cvs.elt.id = 'bg-canvas';
       p.stroke('#707579');
-      p.strokeWeight(0.6);
+      p.strokeWeight(2);
       p.noFill();
       p.strokeCap(p.ROUND);
     };
