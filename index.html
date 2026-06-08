@@ -153,6 +153,9 @@
   }
   .hero-note a { color: var(--accent); font-weight: 500; text-decoration: none; }
 
+  /* mobile-only terminal copy — hidden on desktop */
+  .hero-terminal-mobile { display: none; margin-top: 28px; }
+
   /* ─── TERMINAL ───────────────────────────────────────────────────────────── */
   .terminal {
     background: #0f1117; border-radius: 10px; overflow: hidden;
@@ -182,8 +185,16 @@
   }
 
   /* ─── GIF ────────────────────────────────────────────────────────────────── */
-  .gif-section { background: var(--text); padding: 64px var(--px); width: 100%; }
-  .gif-inner   { max-width: var(--max); margin: 0 auto; }
+  .gif-section {
+    background: var(--text); padding: 64px var(--px); width: 100%;
+    position: relative; overflow: hidden;
+  }
+  .gif-section canvas {
+    position: absolute; inset: 0;
+    width: 100% !important; height: 100% !important;
+    pointer-events: none; opacity: 0.55;
+  }
+  .gif-inner   { max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; }
   .gif-header  { margin-bottom: 28px; }
   .gif-header h2 { color: white; }
   .gif-frame {
@@ -246,30 +257,22 @@
     flex-direction: column;
     gap: 0;
   }
-  .rc-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  .rc-num {
-    font-family: var(--mono); font-size: 11px; color: var(--muted);
-    background: var(--bg); border: 1px solid var(--border);
-    padding: 2px 7px; border-radius: 3px; flex-shrink: 0;
-  }
+  .rc-header { margin-bottom: 14px; }
   .rc-name { font-size: 15px; font-weight: 600; color: var(--text); }
   .rc-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
-  .rc-plots { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+  .rc-plots { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
   .plot-chip {
-    display: flex; flex-direction: column; gap: 2px;
-    padding: 10px 12px;
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 10px;
     background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
   }
+  .plot-chip svg { flex-shrink: 0; }
+  .plot-chip-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .plot-chip-name {
     font-family: var(--mono); font-size: 11px; font-weight: 500;
     color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .plot-chip-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .plot-chip-desc { font-size: 11px; color: var(--muted); line-height: 1.45; }
 
   /* ─── USE CASES ──────────────────────────────────────────────────────────── */
   .usecases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
@@ -278,6 +281,97 @@
   .uc-icon  { font-size: 20px; margin-bottom: 10px; display: block; }
   .uc-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 5px; }
   .uc-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ─── FAQ ────────────────────────────────────────────────────────────────── */
+
+.FAQ-banner {
+  padding: 72px var(--px);
+  background: var(--white);
+}
+
+.FAQ-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.FAQ-inner h2 {
+  margin-bottom: 12px;
+}
+
+.FAQ-intro {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.faq-item:hover {
+  border-color: var(--border-2);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  position: relative;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-content {
+  padding: 0 22px 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.faq-content p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-content pre {
+  margin: 12px 0;
+  padding: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.faq-content code {
+  font-size: 13px;
+}
 
   /* ─── CTA ────────────────────────────────────────────────────────────────── */
   .cta-banner { background: var(--accent); padding: 72px var(--px); text-align: center; width: 100%; }
@@ -301,13 +395,50 @@
   .footer-links a:hover { color: rgba(255,255,255,0.8); }
   .footer-right { font-size: 12px; color: rgba(255,255,255,0.25); font-family: var(--mono); }
 
-  /* ─── ANIMATION ──────────────────────────────────────────────────────────── */
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  /* ─── GIF LIGHTBOX ───────────────────────────────────────────────────────── */
+  #gif-modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.95);
+    align-items: center; justify-content: center;
+    cursor: zoom-out;
+    /* safe area padding for notch/home-bar on iOS */
+    padding: env(safe-area-inset-top, 12px)
+             env(safe-area-inset-right, 12px)
+             env(safe-area-inset-bottom, 12px)
+             env(safe-area-inset-left, 12px);
+  }
+  #gif-modal img {
+    display: block;
+    /* fill as much of the real viewport as possible */
+    max-width: 100%;
+    max-height: 100dvh;
+    width: auto; height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  @media (max-width: 600px) {
+    #gif-modal {
+      padding: 0; /* zero padding on small screens — image fills edge to edge */
+      align-items: center;
+    }
+    #gif-modal img {
+      border-radius: 0;
+      max-height: 100dvh;
+      width: 100%;
+    }
+  }
 
   /* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
   @media (max-width: 960px) {
     :root { --px: 24px; }
-    .hero           { grid-template-columns: 1fr; padding-top: 48px; padding-bottom: 48px; gap: 40px; }
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 48px; padding-bottom: 48px; gap: 0;
+    }
+    .hero-visual          { display: none; }
+    .hero-terminal-mobile { display: block; }
     .gif-section    { padding: 40px var(--px); }
     .report-grid    { grid-template-columns: 1fr; }
     .usecases-grid  { grid-template-columns: 1fr 1fr; }
@@ -324,8 +455,13 @@
     .hero           { padding-top: 40px; padding-bottom: 40px; }
     .section        { padding-top: 56px; padding-bottom: 56px; }
     .section-alt-inner { padding-top: 56px; padding-bottom: 56px; }
-    .terminal-body  { padding: 16px; font-size: 11px; line-height: 1.75; }
+    .terminal-body  { padding: 14px 16px; font-size: 11px; line-height: 1.75; }
     .terminal-bar   { padding: 10px 14px; }
+    /* prevent long URLs from blowing out the card */
+    .terminal-body .ts { word-break: break-all; }
+    .hero-cta       { flex-direction: column; }
+    .hero-cta .btn  { width: 100%; justify-content: center; }
+    .btn-xl         { padding: 12px 20px; font-size: 14px; }
   }
 </style>
 </head>
@@ -371,13 +507,36 @@
       <h1>Nmap XML into<br>a <span>clean report</span>,<br>instantly</h1>
       <p class="hero-sub">
         Transform raw Nmap XML into a single interactive HTML report. Sortable, filterable, exportable. One command, no backend.
+      <small>
+      NmapView is an Nmap XML report viewer that converts Nmap scan results into a portable interactive HTML report. Analyse hosts, services, certificates, NSE output and exposure patterns without a backend, database or reporting infrastructure.</small>
       </p>
       <div class="hero-cta">
         <a href="https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl" class="btn btn-primary btn-xl">↓ Download XSL <span id="btn-version" style="font-weight:400;font-size:11px;margin-left:6px;font-family:var(--mono);opacity:0.75;background:rgba(0,0,0,0.15);padding:1px 6px;border-radius:3px;letter-spacing:0.04em;"></span></a>
         <a href="https://möbius.band/report.html" class="btn btn-ghost btn-xl">View Demo Report</a>
       </div>
+      <div class="hero-terminal-mobile">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="dot dot-r"></span>
+            <span class="dot dot-y"></span>
+            <span class="dot dot-g"></span>
+            <span class="terminal-title">bash — ~/NmapView</span>
+          </div>
+          <div class="terminal-body">
+            <span class="tl tg"># 1. Grab the transformer</span>
+            <span class="tl"><span class="tk">curl</span> <span class="tf">-fsSL</span> <span class="tf">-o</span> <span class="ts">NmapView.xsl</span> <span class="tn">\</span></span>
+            <span class="tl">&nbsp;&nbsp;<span class="ts">https://github.com/dreizehnutters/NmapView/<wbr>releases/latest/download/NmapView.xsl</span></span>
+            <span class="blank"></span>
+            <span class="tl tg"># 2. Generate the report</span>
+            <span class="tl"><span class="tk">xsltproc</span> <span class="tf">-o</span> <span class="ts">report.html</span> <span class="tn">NmapView.xsl scan.xml</span></span>
+            <span class="blank"></span>
+            <span class="tl tg"># 3. Open anywhere</span>
+            <span class="tl"><span class="tk">open</span> <span class="ts">report.html</span> <span class="cursor"></span></span>
+          </div>
+        </div>
+      </div>
       <div class="hero-note">
-        No CLI? Use the <a href="https://möbius.band/proc/">browser-based transformer</a> -> drag and drop your XML directly.
+        No CLI? Use the <a href="https://möbius.band/proc/">browser-based transformer</a> — drag and drop your XML directly.
       </div>
     </div>
     <div class="hero-visual">
@@ -405,12 +564,11 @@
 </div>
 
 <!-- ── GIF ──────────────────────────────────────────────────────────────────── -->
-<div class="gif-section">
+<div class="gif-section" id="gif-section">
   <div class="gif-inner">
     <div class="gif-header">
-      <h2>See it in action</h2>
     </div>
-    <div class="gif-frame" onclick="document.getElementById('gif-modal').style.display='flex'" style="cursor:zoom-in;">
+    <div class="gif-frame" onclick="document.getElementById('gif-modal').style.display='flex';document.body.style.overflow='hidden'" style="cursor:zoom-in;">
       <img src="https://raw.githubusercontent.com/dreizehnutters/NmapView/refs/heads/main/.github/assets/sample.gif"
            alt="NmapView report walkthrough"
            loading="lazy">
@@ -419,22 +577,14 @@
 </div>
 
 <!-- ── GIF LIGHTBOX ─────────────────────────────────────────────────────────── -->
-<div id="gif-modal" onclick="this.style.display='none'" style="
-  display:none;
-  position:fixed;inset:0;z-index:9999;
-  background:rgba(0,0,0,0.92);
-  align-items:center;justify-content:center;
-  padding:24px;
-  cursor:zoom-out;
-">
+<div id="gif-modal" onclick="this.style.display='none';document.body.style.overflow=''">
   <img src="https://raw.githubusercontent.com/dreizehnutters/NmapView/refs/heads/main/.github/assets/sample.gif"
-       alt="NmapView report walkthrough"
-       style="max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 0 0 1px rgba(255,255,255,0.08);">
+       alt="NmapView report walkthrough">
 </div>
 
 <!-- ── FEATURES STRIP ────────────────────────────────────────────────────────── -->
 <div class="strip-section" id="features">
-  <p class="strip-intro">Designed for security assessments, asset discovery, attack-surface reviews and pentest reporting.</p>
+  <h3 class="strip-intro">Designed for security assessments, asset discovery, attack-surface reviews and pentest reporting.</h3>
   <div class="strip-inner">
     <div class="strip-row">
       <div class="strip-label">Fully interactive</div>
@@ -471,65 +621,130 @@
   <div class="report-grid">
 
     <div class="report-card">
-      <div class="rc-header">
-        <span class="rc-num">01</span>
-        <span class="rc-name">Host Overview</span>
-      </div>
-      <p class="rc-desc">Inventory hosts, operating systems, exposure levels and rarity scores. Each host gets a local score based on its service mix: unusual combinations float to the top without manual sorting.</p>
+      <div class="rc-header"><span class="rc-name">Host Overview</span></div>
+      <p class="rc-desc">Inventory hosts, operating systems, exposure levels and rarity scores. Each host gets a local score based on its service mix — unusual combinations float to the top without manual sorting.</p>
       <div class="rc-plots">
         <div class="plot-chip">
-          <span class="plot-chip-name">Open Ports Per Host</span>
-          <span class="plot-chip-desc">Compare exposure at a glance. Spot systems with broad surface area combined with unusual service profiles.</span>
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <line x1="2" y1="28" x2="42" y2="28" stroke="#8b90a0" stroke-width="0.5"/>
+            <rect x="3"  y="18" width="5" height="10" rx="1" fill="#2563eb" opacity="0.3"/>
+            <rect x="10" y="8"  width="5" height="20" rx="1" fill="#2563eb" opacity="0.85"/>
+            <rect x="17" y="14" width="5" height="14" rx="1" fill="#2563eb" opacity="0.55"/>
+            <rect x="24" y="20" width="5" height="8"  rx="1" fill="#2563eb" opacity="0.4"/>
+            <rect x="31" y="22" width="5" height="6"  rx="1" fill="#2563eb" opacity="0.3"/>
+            <rect x="38" y="25" width="4" height="3"  rx="1" fill="#2563eb" opacity="0.2"/>
+          </svg>
+          <div class="plot-chip-text">
+            <span class="plot-chip-name">Open Ports Per Host</span>
+            <span class="plot-chip-desc">Compare exposure. Spot high-surface systems with unusual profiles.</span>
+          </div>
         </div>
         <div class="plot-chip">
-          <span class="plot-chip-name">OS Distribution</span>
-          <span class="plot-chip-desc">See which OS families dominate and where platform diversity or concentration stands out.</span>
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <rect x="2"  y="2"  width="24" height="16" rx="1" fill="#2563eb" opacity="0.7"/>
+            <rect x="28" y="2"  width="14" height="16" rx="1" fill="#2563eb" opacity="0.35"/>
+            <rect x="2"  y="20" width="14" height="8"  rx="1" fill="#2563eb" opacity="0.45"/>
+            <rect x="18" y="20" width="10" height="8"  rx="1" fill="#2563eb" opacity="0.2"/>
+            <rect x="30" y="20" width="12" height="8"  rx="1" fill="#2563eb" opacity="0.55"/>
+          </svg>
+          <div class="plot-chip-text">
+            <span class="plot-chip-name">OS Distribution</span>
+            <span class="plot-chip-desc">See which OS families dominate and where diversity stands out.</span>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="report-card">
-      <div class="rc-header">
-        <span class="rc-num">02</span>
-        <span class="rc-name">Open Services</span>
-      </div>
+      <div class="rc-header"><span class="rc-name">Open Services</span></div>
       <p class="rc-desc">Review exposed services, versions, certificates, HTTP metadata, CPEs and vulnerability references. Filter by SSL, search on service names, expand NSE output inline. Port numbers on web endpoints are clickable for direct access.</p>
       <div class="rc-plots">
         <div class="plot-chip">
-          <span class="plot-chip-name">Service Distribution Across Hosts</span>
-          <span class="plot-chip-desc">Separates widespread baseline services from uncommon ones that only appear on a handful of hosts.</span>
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <line x1="2" y1="2" x2="2" y2="28" stroke="#8b90a0" stroke-width="0.5"/>
+            <rect x="3" y="4"  width="30" height="5" rx="1" fill="#2563eb" opacity="0.8"/>
+            <rect x="3" y="11" width="18" height="5" rx="1" fill="#2563eb" opacity="0.5"/>
+            <rect x="21" y="11" width="8"  height="5" rx="1" fill="#2563eb" opacity="0.25"/>
+            <rect x="3" y="18" width="24" height="5" rx="1" fill="#2563eb" opacity="0.65"/>
+            <rect x="27" y="18" width="6"  height="5" rx="1" fill="#2563eb" opacity="0.2"/>
+            <rect x="3" y="25" width="10" height="3" rx="1" fill="#2563eb" opacity="0.3"/>
+          </svg>
+          <div class="plot-chip-text">
+            <span class="plot-chip-name">Service Distribution Across Hosts</span>
+            <span class="plot-chip-desc">Separates baseline noise from uncommon services.</span>
+          </div>
         </div>
         <div class="plot-chip">
-          <span class="plot-chip-name">Host-Service Relationships</span>
-          <span class="plot-chip-desc">See which services are shared across hosts and which are isolated, baselines versus one-offs.</span>
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <circle cx="6"  cy="15" r="3.5" fill="#2563eb" opacity="0.7"/>
+            <circle cx="19" cy="8"  r="3.5" fill="#2563eb" opacity="0.5"/>
+            <circle cx="19" cy="22" r="3.5" fill="#2563eb" opacity="0.5"/>
+            <circle cx="38" cy="10" r="3.5" fill="#2563eb" opacity="0.7"/>
+            <circle cx="38" cy="20" r="3.5" fill="#2563eb" opacity="0.35"/>
+            <line x1="9"  y1="13" x2="16" y2="9"  stroke="#2563eb" stroke-width="0.75" opacity="0.5"/>
+            <line x1="9"  y1="17" x2="16" y2="21" stroke="#2563eb" stroke-width="0.75" opacity="0.5"/>
+            <line x1="22" y1="9"  x2="35" y2="11" stroke="#2563eb" stroke-width="0.75" opacity="0.4"/>
+            <line x1="22" y1="21" x2="35" y2="19" stroke="#2563eb" stroke-width="0.75" opacity="0.4"/>
+            <line x1="22" y1="9"  x2="35" y2="19" stroke="#2563eb" stroke-width="0.5"  opacity="0.2"/>
+          </svg>
+          <div class="plot-chip-text">
+            <span class="plot-chip-name">Host-Service Relationships</span>
+            <span class="plot-chip-desc">Shared vs isolated services — baselines versus one-offs.</span>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="report-card">
-      <div class="rc-header">
-        <span class="rc-num">03</span>
-        <span class="rc-name">Service Summary</span>
-      </div>
-      <p class="rc-desc">Group hosts by service, product and version. Script-derived details: HTTP headers, X-Powered-By, cert data stay attached to each variant. Version drift becomes visible at a glance: SSH splits into OpenSSH families, HTTP into Apache and nginx variants.</p>
+      <div class="rc-header"><span class="rc-name">Service Summary</span></div>
+      <p class="rc-desc">Group hosts by service, product and version. Script-derived details — HTTP headers, X-Powered-By, cert data — stay attached to each variant. Version drift becomes visible at a glance: SSH splits into OpenSSH families, HTTP into Apache and nginx variants.</p>
       <div class="rc-plots">
         <div class="plot-chip">
-          <span class="plot-chip-name">Host-Port Matrix</span>
-          <span class="plot-chip-desc">See which ports appear on which hosts and spot unusual exposure patterns across the environment.</span>
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <rect x="4"  y="4"  width="8" height="7" rx="0.5" fill="#2563eb" opacity="0.85"/>
+            <rect x="13" y="4"  width="8" height="7" rx="0.5" fill="#2563eb" opacity="0.1"/>
+            <rect x="22" y="4"  width="8" height="7" rx="0.5" fill="#2563eb" opacity="0.55"/>
+            <rect x="31" y="4"  width="9" height="7" rx="0.5" fill="#2563eb" opacity="0.3"/>
+            <rect x="4"  y="13" width="8" height="7" rx="0.5" fill="#2563eb" opacity="0.2"/>
+            <rect x="13" y="13" width="8" height="7" rx="0.5" fill="#2563eb" opacity="0.9"/>
+            <rect x="22" y="13" width="8" height="7" rx="0.5" fill="#2563eb" opacity="0.1"/>
+            <rect x="31" y="13" width="9" height="7" rx="0.5" fill="#2563eb" opacity="0.7"/>
+            <rect x="4"  y="22" width="8" height="6" rx="0.5" fill="#2563eb" opacity="0.4"/>
+            <rect x="13" y="22" width="8" height="6" rx="0.5" fill="#2563eb" opacity="0.05"/>
+            <rect x="22" y="22" width="8" height="6" rx="0.5" fill="#2563eb" opacity="0.75"/>
+            <rect x="31" y="22" width="9" height="6" rx="0.5" fill="#2563eb" opacity="0.15"/>
+          </svg>
+          <div class="plot-chip-text">
+            <span class="plot-chip-name">Host-Port Matrix</span>
+            <span class="plot-chip-desc">See which ports appear on which hosts. Spot unusual exposure patterns.</span>
+          </div>
         </div>
         <div class="plot-chip">
-          <span class="plot-chip-name">Service-Port Heatmap</span>
-          <span class="plot-chip-desc">Confirms expected port usage and highlights unusual service-to-port combinations.</span>
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <rect x="2"  y="2"  width="9" height="7" rx="0.5" fill="#185FA5" opacity="0.9"/>
+            <rect x="12" y="2"  width="9" height="7" rx="0.5" fill="#2563eb" opacity="0.4"/>
+            <rect x="22" y="2"  width="9" height="7" rx="0.5" fill="#378ADD" opacity="0.6"/>
+            <rect x="32" y="2"  width="10" height="7" rx="0.5" fill="#bfdbfe" opacity="0.9"/>
+            <rect x="2"  y="11" width="9" height="7" rx="0.5" fill="#2563eb" opacity="0.5"/>
+            <rect x="12" y="11" width="9" height="7" rx="0.5" fill="#185FA5" opacity="0.85"/>
+            <rect x="22" y="11" width="9" height="7" rx="0.5" fill="#bfdbfe" opacity="0.5"/>
+            <rect x="32" y="11" width="10" height="7" rx="0.5" fill="#378ADD" opacity="0.7"/>
+            <rect x="2"  y="20" width="9" height="8" rx="0.5" fill="#bfdbfe" opacity="0.6"/>
+            <rect x="12" y="20" width="9" height="8" rx="0.5" fill="#378ADD" opacity="0.3"/>
+            <rect x="22" y="20" width="9" height="8" rx="0.5" fill="#185FA5" opacity="0.95"/>
+            <rect x="32" y="20" width="10" height="8" rx="0.5" fill="#2563eb" opacity="0.55"/>
+          </svg>
+          <div class="plot-chip-text">
+            <span class="plot-chip-name">Service-Port Heatmap</span>
+            <span class="plot-chip-desc">Confirms expected port usage, highlights unusual service-to-port combos.</span>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="report-card">
-      <div class="rc-header">
-        <span class="rc-num">04</span>
-        <span class="rc-name">Host Details</span>
-      </div>
-      <p class="rc-desc">Drill into ports, banners, scripts and complete NSE output for individual hosts. Associated CVEs link out to Metasploit modules and PacketStorm references. The pivot point for incident response and targeted follow-up: scope the report first, then export to CSV or JSON for downstream tools.</p>
+      <div class="rc-header"><span class="rc-name">Host Details</span></div>
+      <p class="rc-desc">Drill into ports, banners, scripts and complete NSE output for individual hosts. Associated CVEs link out to Metasploit modules and PacketStorm references. The pivot point for incident response and targeted follow-up — scope the report first, then export to CSV or JSON for downstream tools.</p>
     </div>
 
   </div>
@@ -538,13 +753,13 @@
 <!-- ── USE CASES ──────────────────────────────────────────────────────────────── -->
 <div class="section-alt" id="usecases">
   <div class="section-alt-inner">
-    <h2>Built for the full workflow</h2>
-    <p class="section-sub">From jump-box triage to polished client deliverables. The same HTML file works as a pivot point, a handoff artifact, and a prompt surface for LLM analysis.</p>
+    <h2>Common Nmap Reporting Workflows</h2>
+    <p class="section-sub">From jump-box triage to polished client deliverables. The same HTML report can be used for investigation, reporting, client handoff and downstream automation.</p>
     <div class="usecases-grid">
       <div class="uc-card">
         <span class="uc-icon">🏢</span>
         <div class="uc-title">Internal Network Assessments</div>
-        <div class="uc-desc">Enumerate hosts, spot version drift, and document findings in a portable format, without a reporting pipeline on the jump box.</div>
+        <div class="uc-desc">Enumerate hosts, spot version drift, and document findings in a portable format — without a reporting pipeline on the jump box.</div>
       </div>
       <div class="uc-card">
         <span class="uc-icon">🌍</span>
@@ -554,7 +769,7 @@
       <div class="uc-card">
         <span class="uc-icon">📝</span>
         <div class="uc-title">Pentest Reporting</div>
-        <div class="uc-desc">Hand clients an interactive report as a single file. No account, no server, no expiry: scope it to the hosts that matter first.</div>
+        <div class="uc-desc">Hand clients an interactive report as a single file. No account, no server, no expiry — scope it to the hosts that matter first.</div>
       </div>
       <div class="uc-card">
         <span class="uc-icon">🔗</span>
@@ -564,7 +779,7 @@
       <div class="uc-card">
         <span class="uc-icon">🤖</span>
         <div class="uc-title">LLM Analysis</div>
-        <div class="uc-desc">The exported CSV or JSON from a scoped report is a better prompt surface than raw Nmap XML grouped, labeled, and easy to slice.</div>
+        <div class="uc-desc">The exported CSV or JSON from a scoped report is a better prompt surface than raw Nmap XML — grouped, labeled, and easy to slice.</div>
       </div>
       <div class="uc-card">
         <span class="uc-icon">📦</span>
@@ -572,6 +787,164 @@
         <div class="uc-desc">Build a living inventory from periodic scans. Export to Excel for management review, compliance tracking, or audit handoff.</div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────────────────── -->
+<div class="FAQ-banner">
+  <div class="FAQ-inner">
+
+    <h2>Frequently Asked Questions</h2>
+
+    <p class="FAQ-intro">
+      Common questions about generating and analysing Nmap reports with NmapView.
+    </p>
+
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary>What is NmapView?</summary>
+        <div class="faq-content">
+          <p>
+            NmapView is an Nmap XML report viewer that transforms Nmap scan
+            results into a portable interactive HTML report. Hosts, services,
+            certificates, NSE output and vulnerability references are grouped
+            into a format designed for investigation and reporting.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>How do I convert Nmap XML into an HTML report?</summary>
+        <div class="faq-content">
+          <p>Generate a report using xsltproc:</p>
+
+          <pre><code>xsltproc -o report.html NmapView.xsl scan.xml</code></pre>
+
+          <p>
+            The generated report is a standalone HTML file that can be opened,
+            shared or archived without additional infrastructure.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Does NmapView require a server or database?</summary>
+        <div class="faq-content">
+          <p>
+            No. NmapView produces a single self-contained HTML report.
+            No backend, API, database or container is required.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+  <summary>Can NmapView handle large Nmap scans?</summary>
+  <div class="faq-content">
+    <p>
+      NmapView runs entirely in the browser and is ultimately constrained
+      by the client's CPU, memory and browser implementation.
+    </p>
+
+    <p>
+      In practice, reports containing several hundred hosts remain highly
+      usable on modern systems. Reports with around 500 hosts are typically
+      handled comfortably while retaining filtering, exports and
+      visualisations.
+    </p>
+
+    <p>
+      Very large enterprise scans may benefit from scoping the report to a
+      subset of hosts before exporting data for further processing.
+    </p>
+  </div>
+</details>
+
+      <details class="faq-item">
+  <summary>Can I convert Nmap XML without installing xsltproc?</summary>
+  <div class="faq-content">
+    <p>
+      Yes. NmapView also provides a browser-based transformer that converts
+      Nmap XML directly in your browser.
+    </p>
+
+    <p>
+      All processing happens client-side. Scan data is not uploaded to a
+      server or transmitted over the network.
+    </p>
+
+    <p>
+      <a href="https://möbius.band/proc/" target="_blank" rel="noopener">
+        Open the browser transformer →
+      </a>
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>What is host rarity scoring?</summary>
+  <div class="faq-content">
+    <p>
+      Host rarity scoring highlights systems whose service combinations are
+      unusual compared to the rest of the scanned environment.
+    </p>
+
+    <p>
+      The score is based on principles from information theory and uses the
+      concept of self-information. Services that appear on only a few hosts
+      contribute more information than services found everywhere.
+    </p>
+
+    <p>
+      As a result, hosts running uncommon combinations of software naturally
+      rise to the top of the inventory, helping surface outliers without
+      manual sorting.
+    </p>
+
+    <p>
+      Learn more:
+      <a href="https://en.wikipedia.org/wiki/Self-information"
+         target="_blank"
+         rel="noopener">
+        Self-information
+      </a>
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Can NmapView be used during penetration tests?</summary>
+  <div class="faq-content">
+    <p>
+      Yes. NmapView is commonly useful during internal assessments,
+      external attack-surface reviews and penetration tests where rapid
+      triage of large scan results is required.
+    </p>
+
+    <p>
+      The report can also be delivered alongside traditional findings as an
+      interactive inventory of the scanned environment.
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Can I share generated reports?</summary>
+  <div class="faq-content">
+    <p>
+      Yes. Generated reports are self-contained HTML files.
+    </p>
+
+    <p>
+      They can be attached to tickets, archived with assessment artefacts,
+      shared with clients or reviewed offline without requiring access to
+      the original scan environment.
+    </p>
+  </div>
+</details>
+
+    </div>
+
   </div>
 </div>
 
@@ -608,9 +981,13 @@
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 <script>
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') document.getElementById('gif-modal').style.display = 'none';
+    if (e.key === 'Escape') {
+      document.getElementById('gif-modal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
   });
   // Stars — hardcoded fallback of 2 (current count), overwritten by live API
   const starsEl = document.getElementById('gh-stars');
@@ -641,6 +1018,50 @@
           .catch(() => {})
       );
   }
+  // ── p5 magnifier background ─────────────────────────────────────────────────
+  new p5(function(p) {
+    const section = document.getElementById('gif-section');
+    let offsetX = 0, offsetY = 0;
+
+    p.setup = function() {
+      const cvs = p.createCanvas(section.offsetWidth, section.offsetHeight);
+      cvs.parent(section);
+      // move canvas to be first child so it sits behind .gif-inner
+      section.insertBefore(cvs.elt, section.firstChild);
+      cvs.elt.id = 'bg-canvas';
+      p.stroke('#707579');
+      p.strokeWeight(0.6);
+      p.noFill();
+      p.strokeCap(p.ROUND);
+    };
+
+    p.draw = function() {
+      p.background(11);
+      const spacing = 64;
+      const iconSize = 15;
+      offsetX = (offsetX + 0.2) % spacing;
+      offsetY = (offsetY + 0.15) % spacing;
+
+      for (let x = -spacing; x < p.width + spacing; x += spacing) {
+        for (let y = -spacing; y < p.height + spacing; y += spacing) {
+          p.push();
+          p.translate(x - offsetX + spacing / 2, y - offsetY + spacing / 2);
+          p.rotate(p.frameCount / 500);
+          drawMagnifier(iconSize);
+          p.pop();
+        }
+      }
+    };
+
+    function drawMagnifier(s) {
+      p.circle(-s * 0.15, -s * 0.15, s * 0.55);
+      p.line(s * 0.10, s * 0.10, s * 0.40, s * 0.40);
+    }
+
+    p.windowResized = function() {
+      p.resizeCanvas(section.offsetWidth, section.offsetHeight);
+    };
+  });
 </script>
 </body>
 </html>
