@@ -29,8 +29,20 @@
   "@type": "SoftwareApplication",
   "name": "NmapView",
   "applicationCategory": "SecurityApplication",
-  "operatingSystem": "Cross-platform",
-  "description": "Nmap XML report viewer that converts Nmap XML into portable interactive HTML reports.",
+  "operatingSystem": "Linux, macOS, Windows",
+  "description": "Nmap XML report viewer that converts Nmap XML into portable interactive HTML reports. An open-source XSLT stylesheet tool to transform flat Nmap XML data into an interactive, portable HTML report dashboard.",
+  "softwareVersion": "3.4a",
+  "offers": {
+    "@type": "Offer",
+    "price": "0.00",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Converts Nmap XML to interactive HTML reports",
+    "Searchable and sortable data tables",
+    "Export network data to CSV, Excel, and JSON",
+    "100% offline, client-side local data processing"
+  ],
   "url": "https://nmapview.github.io/",
   "codeRepository": "https://github.com/dreizehnutters/NmapView",
   "sameAs": [
@@ -262,7 +274,7 @@
   .rc-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
   .rc-plots { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
   .plot-chip {
-    display: flex; align-items: flex-start; gap: 10px;
+    display: flex; align-items: center; gap: 10px;
     padding: 9px 10px;
     background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
   }
@@ -463,6 +475,91 @@
     .hero-cta .btn  { width: 100%; justify-content: center; }
     .btn-xl         { padding: 12px 20px; font-size: 14px; }
   }
+
+  .seo-heading {
+    font-size: .5rem;
+    font-weight: 600;
+    line-height: 1;
+    margin: 0 auto 0px;
+    display: flex;
+    text-align: center;
+}
+.terminal {
+  position: relative;
+}
+
+/* 2. Remove the old margins and transform from the inner span */
+.terminal-title {
+  font-family: var(--mono); 
+  font-size: 11px; 
+  color: #565970;
+  margin: 0;
+  transform: none; /* Removed the hardcoded -16px translation */
+}
+.seo-heading-mobile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  /* This matches the exact height of your .terminal-bar (12px top/bottom padding + 10px dot height) */
+  height: 34px; 
+  
+  /* Flex centering magic */
+  display: flex;
+  align-items: center;     /* Perfectly aligns vertical center with the dots */
+  justify-content: center; /* Horizontally centers the text on the screen */
+  
+  margin: 0;
+  pointer-events: none;    /* Stops the absolute layer from blocking clicks beneath it */
+}
+
+/* 1. Base section - Keep your exact original blue color layer here */
+#cta-section {
+  position: relative;
+  overflow: hidden;
+  /* Ensure your original blue theme is applied right here */
+}
+
+/* 2. Soften the canvas vectors so they don't overpower the theme */
+#bg-canvas-cta {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35; /* Adjust to let your blue layer shine through the lines */
+}
+
+/* 3. The Translucent Frosted Glass Card Container */
+.cta-inner {
+  position: relative;
+  z-index: 2;
+  
+  /* Neutral transparent shield - lets your original blue tone show through perfectly */
+  background: rgba(255, 255, 255, 0.01); 
+  
+  /* The blur effect that separates text from the animation matrix */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* Subtle glass border and card styling */
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Sharp edge highlight */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* Soft drop shadow separation */
+}
+
+/* 4. Text Contrast Safeguard */
+.cta-inner h2,
+.cta-inner p {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Keeps text punchy over the blur */
+}
 </style>
 </head>
 <body>
@@ -483,6 +580,7 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#report">Report</a></li>
         <li><a href="#usecases">Use Cases</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
     </div>
     <div class="nav-right">
@@ -507,7 +605,7 @@
       <h1>Nmap XML into<br>a <span>clean report</span>,<br>instantly</h1>
       <p class="hero-sub">
         Transform raw Nmap XML into a single interactive HTML report. Sortable, filterable, exportable. One command, no backend.
-      <small>
+      <br><small>
       NmapView is an Nmap XML report viewer that converts Nmap scan results into a portable interactive HTML report. Analyse hosts, services, certificates, NSE output and exposure patterns without a backend, database or reporting infrastructure.</small>
       </p>
       <div class="hero-cta">
@@ -520,14 +618,18 @@
             <span class="dot dot-r"></span>
             <span class="dot dot-y"></span>
             <span class="dot dot-g"></span>
-            <span class="terminal-title">bash — ~/NmapView</span>
           </div>
+          <h2 class="seo-heading-mobile">
+    <span class="terminal-title">
+        How to Generate an Interactive Nmap Report
+    </span>
+</h2>
           <div class="terminal-body">
-            <span class="tl tg"># 1. Grab the transformer</span>
+            <span class="tl tg"># 1. Download the latest presentation stylesheet</span>
             <span class="tl"><span class="tk">curl</span> <span class="tf">-fsSL</span> <span class="tf">-o</span> <span class="ts">NmapView.xsl</span> <span class="tn">\</span></span>
             <span class="tl">&nbsp;&nbsp;<span class="ts">https://github.com/dreizehnutters/NmapView/<wbr>releases/latest/download/NmapView.xsl</span></span>
             <span class="blank"></span>
-            <span class="tl tg"># 2. Generate the report</span>
+            <span class="tl tg"># 2. Convert raw Nmap data into an interactive HTML report</span>
             <span class="tl"><span class="tk">xsltproc</span> <span class="tf">-o</span> <span class="ts">report.html</span> <span class="tn">NmapView.xsl scan.xml</span></span>
             <span class="blank"></span>
             <span class="tl tg"># 3. Open anywhere</span>
@@ -545,14 +647,18 @@
           <span class="dot dot-r"></span>
           <span class="dot dot-y"></span>
           <span class="dot dot-g"></span>
-          <span class="terminal-title">bash — ~/NmapView</span>
+          <h2 class="seo-heading">
+    <span class="terminal-title">
+        How to Generate an Interactive Nmap Report
+    </span>
+</h2>
         </div>
         <div class="terminal-body">
-          <span class="tl tg"># 1. Grab the transformer</span>
+          <span class="tl tg"># 1. Download the latest presentation stylesheet</span>
           <span class="tl"><span class="tk">curl</span> <span class="tf">-fsSL</span> <span class="tf">-o</span> <span class="ts">NmapView.xsl</span> <span class="tn">\</span></span>
           <span class="tl">&nbsp;&nbsp;<span class="ts">https://github.com/dreizehnutters/NmapView/releases/latest/download/NmapView.xsl</span></span>
           <span class="blank"></span>
-          <span class="tl tg"># 2. Generate the report</span>
+          <span class="tl tg"># 2. Convert raw Nmap data into an interactive HTML report</span>
           <span class="tl"><span class="tk">xsltproc</span> <span class="tf">-o</span> <span class="ts">report.html</span> <span class="tn">NmapView.xsl scan.xml</span></span>
           <span class="blank"></span>
           <span class="tl tg"># 3. Open anywhere</span>
@@ -588,7 +694,7 @@
   <div class="strip-inner">
     <div class="strip-row">
       <div class="strip-label">Fully interactive</div>
-      <div class="strip-desc">Sort · Filter · Search · Export</div>
+      <div class="strip-desc">Sort · Filter · Search · Export (csv, json, xlsx, plain)</div>
     </div>
     <div class="strip-row">
       <div class="strip-label">Host rarity scoring</div>
@@ -596,7 +702,7 @@
     </div>
     <div class="strip-row">
       <div class="strip-label">Service intelligence</div>
-      <div class="strip-desc">Versions · CPEs · NSE enrichment · CVE links</div>
+      <div class="strip-desc">Versions · Banners · NSE enrichment · CPE links</div>
     </div>
     <div class="strip-row">
       <div class="strip-label">Host scoping</div>
@@ -657,7 +763,7 @@
 
     <div class="report-card">
       <div class="rc-header"><span class="rc-name">Open Services</span></div>
-      <p class="rc-desc">Review exposed services, versions, certificates, HTTP metadata, CPEs and vulnerability references. Filter by SSL, search on service names, expand NSE output inline. Port numbers on web endpoints are clickable for direct access.</p>
+      <p class="rc-desc">Review exposed services, versions, certificates, HTTP metadata, CPEs and vulnerability references. Filter by SSL, search on service names, expand NSE output inline. Port numbers are clickable for direct access in new tabs.</p>
       <div class="rc-plots">
         <div class="plot-chip">
           <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
@@ -757,33 +863,27 @@
     <p class="section-sub">From jump-box triage to polished client deliverables. The same HTML report can be used for investigation, reporting, client handoff and downstream automation.</p>
     <div class="usecases-grid">
       <div class="uc-card">
-        <span class="uc-icon">🏢</span>
-        <div class="uc-title">Internal Network Assessments</div>
+        <div class="uc-title">🏢 Internal Network Assessments</div>
         <div class="uc-desc">Enumerate hosts, spot version drift, and document findings in a portable format — without a reporting pipeline on the jump box.</div>
       </div>
       <div class="uc-card">
-        <span class="uc-icon">🌍</span>
-        <div class="uc-title">External Attack Surface Reviews</div>
+        <div class="uc-title">🌍 Attack Surface Reviews</div>
         <div class="uc-desc">Map public-facing infrastructure, filter to SSL endpoints, and track remediation progress across periodic scans.</div>
       </div>
       <div class="uc-card">
-        <span class="uc-icon">📝</span>
-        <div class="uc-title">Pentest Reporting</div>
+        <div class="uc-title">📝 Pentest Reporting</div>
         <div class="uc-desc">Hand clients an interactive report as a single file. No account, no server, no expiry — scope it to the hosts that matter first.</div>
       </div>
       <div class="uc-card">
-        <span class="uc-icon">🔗</span>
-        <div class="uc-title">Downstream Tool Handoff</div>
+        <div class="uc-title">🔗 Downstream Tool Handoff</div>
         <div class="uc-desc">Scope and filter, then export to CSV or JSON for httpx, nuclei, testssl.sh, or ssh-audit follow-up.</div>
       </div>
       <div class="uc-card">
-        <span class="uc-icon">🤖</span>
-        <div class="uc-title">LLM Analysis</div>
+        <div class="uc-title">🤖 LLM Analysis</div>
         <div class="uc-desc">The exported CSV or JSON from a scoped report is a better prompt surface than raw Nmap XML — grouped, labeled, and easy to slice.</div>
       </div>
       <div class="uc-card">
-        <span class="uc-icon">📦</span>
-        <div class="uc-title">Asset Inventory</div>
+        <div class="uc-title">📦 Asset Inventory</div>
         <div class="uc-desc">Build a living inventory from periodic scans. Export to Excel for management review, compliance tracking, or audit handoff.</div>
       </div>
     </div>
@@ -791,7 +891,7 @@
 </div>
 
 <!-- ── FAQ ────────────────────────────────────────────────────────────────────── -->
-<div class="FAQ-banner">
+<div class="FAQ-banner" id="faq">
   <div class="FAQ-inner">
 
     <h2>Frequently Asked Questions</h2>
@@ -803,19 +903,55 @@
     <div class="faq-list">
 
       <details class="faq-item">
-        <summary>What is NmapView?</summary>
-        <div class="faq-content">
-          <p>
-            NmapView is an Nmap XML report viewer that transforms Nmap scan
-            results into a portable interactive HTML report. Hosts, services,
-            certificates, NSE output and vulnerability references are grouped
-            into a format designed for investigation and reporting.
-          </p>
-        </div>
-      </details>
+  <summary><h3>What is the NmapView HTML Report Template?</h3></summary>
+  <div class="faq-content">
+    <p>
+      NmapView is an advanced <strong>Nmap XML report</strong> viewer that transforms flat Nmap scan
+      results into a portable, interactive HTML report dashboard. Target hosts, open services, SSL 
+      certificates, NSE script output, and vulnerability references are automatically grouped into a 
+      clean <strong>nmap report format</strong> designed for rapid infrastructure investigation and security reporting.
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary><h3>Is my sensitive Nmap data secure when using the web transformer?</h3></summary>
+  <div class="faq-content">
+    <p>
+      Yes, 100%. When you drop an XML file into the browser version, your <strong>Nmap data</strong> is processed entirely client-side using JavaScript within your local browser sandbox. No network transmission occurs, meaning your network architecture data never leaves your local machine, making it completely safe for sensitive penetration testing environments.
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary><h3>How do I convert Nmap XML data to Excel, CSV, or JSON?</h3></summary>
+  <div class="faq-content">
+    <p>
+      The generated <strong>Nmap HTML report</strong> features built-in export actions. From the interactive data tables on the dashboard, you can instantly export filtered or global service inventories, open ports, and asset lists straight to Excel, CSV, or raw JSON data formats for reporting or further data manipulation.
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary><h3>What makes NmapView different from standard Nmap XML report parsers?</h3></summary>
+  <div class="faq-content">
+    <p>
+      Unlike traditional static XSL stylesheets or complex python-to-markdown reporting pipelines that require backend server setups, NmapView runs instantly using zero-dependency local utilities like <code>xsltproc</code>. It yields a single, double-clickable HTML dashboard packed with modern UI features like real-time global filtering, live text highlighting, and responsive layout data visualizations.
+    </p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary><h3>Can I customize the design or structure of the Nmap report?</h3></summary>
+  <div class="faq-content">
+    <p>
+      Absolutely. Because NmapView uses native XSLT 1.0, you can modify the underlying <code>NmapView.xsl</code> file to inject your own custom CSS styling, update brand colors, or change data columns to match your organization's internal vulnerability assessment and reporting standards.
+    </p>
+  </div>
+</details>
 
       <details class="faq-item">
-        <summary>How do I convert Nmap XML into an HTML report?</summary>
+        <summary><h3>How do I convert Nmap XML into an HTML report?</h3></summary>
         <div class="faq-content">
           <p>Generate a report using xsltproc:</p>
 
@@ -829,7 +965,7 @@
       </details>
 
       <details class="faq-item">
-        <summary>Does NmapView require a server or database?</summary>
+        <summary><h3>Does NmapView require a server or database?</h3></summary>
         <div class="faq-content">
           <p>
             No. NmapView produces a single self-contained HTML report.
@@ -839,7 +975,7 @@
       </details>
 
       <details class="faq-item">
-  <summary>Can NmapView handle large Nmap scans?</summary>
+  <summary><h3>Can NmapView handle large Nmap scans?</h3></summary>
   <div class="faq-content">
     <p>
       NmapView runs entirely in the browser and is ultimately constrained
@@ -861,7 +997,7 @@
 </details>
 
       <details class="faq-item">
-  <summary>Can I convert Nmap XML without installing xsltproc?</summary>
+  <summary><h3>Can I convert Nmap XML without installing xsltproc?</h3></summary>
   <div class="faq-content">
     <p>
       Yes. NmapView also provides a browser-based transformer that converts
@@ -882,7 +1018,7 @@
 </details>
 
 <details class="faq-item">
-  <summary>What is host rarity scoring?</summary>
+  <summary><h3>What is host rarity scoring?</h3></summary>
   <div class="faq-content">
     <p>
       Host rarity scoring highlights systems whose service combinations are
@@ -913,7 +1049,7 @@
 </details>
 
 <details class="faq-item">
-  <summary>Can NmapView be used during penetration tests?</summary>
+  <summary><h3>Can NmapView be used during penetration tests?</h3></summary>
   <div class="faq-content">
     <p>
       Yes. NmapView is commonly useful during internal assessments,
@@ -929,7 +1065,7 @@
 </details>
 
 <details class="faq-item">
-  <summary>Can I share generated reports?</summary>
+  <summary><h3>Can I share generated reports?</h3></summary>
   <div class="faq-content">
     <p>
       Yes. Generated reports are self-contained HTML files.
@@ -949,7 +1085,7 @@
 </div>
 
 <!-- ── CTA ────────────────────────────────────────────────────────────────────── -->
-<div class="cta-banner">
+<div id="cta-section" class="cta-banner">
   <div class="cta-inner">
     <h2>Ready to ship better reports?</h2>
     <p>Download the XSL transformer and generate your first interactive report in under a minute.</p>
@@ -1031,7 +1167,7 @@
       section.insertBefore(cvs.elt, section.firstChild);
       cvs.elt.id = 'bg-canvas';
       p.stroke('#707579');
-      p.strokeWeight(2);
+      p.strokeWeight(1);
       p.noFill();
       p.strokeCap(p.ROUND);
     };
@@ -1063,6 +1199,52 @@
       p.resizeCanvas(section.offsetWidth, section.offsetHeight);
     };
   });
+  //
+  new p5(function(p) {
+    const section = document.getElementById('cta-section');
+    let offsetX = 0, offsetY = 0;
+
+    p.setup = function() {
+      p.pixelDensity(2);
+      const cvs = p.createCanvas(section.offsetWidth, section.offsetHeight);
+      cvs.parent(section);
+      // move canvas to be first child so it sits behind .gif-inner
+      section.insertBefore(cvs.elt, section.firstChild);
+      cvs.elt.id = 'bg-canvas-cta';
+      p.stroke('#ffffff');
+      p.strokeWeight(1);
+      p.noFill();
+      p.strokeCap(p.ROUND);
+    };
+
+    p.draw = function() {
+      p.clear();
+      const spacing = 64;
+      const iconSize = 15;
+      offsetX = (offsetX + 0.2) % spacing;
+      offsetY = (offsetY + 0.15) % spacing;
+
+      for (let x = -spacing; x < p.width + spacing; x += spacing) {
+        for (let y = -spacing; y < p.height + spacing; y += spacing) {
+          p.push();
+          p.translate(x - offsetX + spacing / 2, y - offsetY + spacing / 2);
+          p.rotate(p.frameCount / 500);
+          drawMagnifier(iconSize);
+          p.pop();
+        }
+      }
+    };
+
+    function drawMagnifier(s) {
+      p.circle(-s * 0.15, -s * 0.15, s * 0.55);
+      p.line(s * 0.10, s * 0.10, s * 0.40, s * 0.40);
+    }
+
+    p.windowResized = function() {
+      p.resizeCanvas(section.offsetWidth, section.offsetHeight);
+    };
+  });
+
 </script>
 </body>
 </html>
